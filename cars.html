@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cars</title>
+<style>
+body {
+    font-family: Arial;
+    background:#f4f6f8;
+    margin:0;
+}
+header {
+    background:#1e2a38;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+nav a {
+    color:white;
+    margin:0 10px;
+    text-decoration:none;
+}
+#container {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+    padding:30px;
+}
+.box {
+    background:white;
+    width:250px;
+    border-radius:10px;
+    box-shadow:0 5px 10px rgba(0,0,0,0.1);
+    text-align:center;
+    transition:0.3s;
+}
+.box:hover {
+    transform:translateY(-5px);
+}
+.box img {
+    width:100%;
+    height:150px;
+    object-fit:cover;
+}
+.price {
+    color:green;
+    font-weight:bold;
+}
+button {
+    background:green;
+    color:white;
+    border:none;
+    padding:10px;
+    margin:10px;
+    cursor:pointer;
+    border-radius:5px;
+}
+#popup {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+}
+.form-box {
+    background:white;
+    padding:25px;
+    width:320px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+input {
+    width:90%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+#success {
+    display:none;
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:green;
+    color:white;
+    padding:15px 20px;
+    border-radius:5px;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>Cars</h1>
+<nav>
+<a href="cars.html">Cars</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</nav>
+</header>
+<div id="container">
+<div class="box">
+    <img src="car1.jpeg">
+    <h4>City Car</h4>
+    <p class="price" data-price="50">$50/day</p>
+    <button onclick="openForm(this)">BORROW</button>
+</div>
+<div class="box">
+    <img src="car2.jpeg">
+    <h4>Sport Car</h4>
+    <p class="price" data-price="120">$120/day</p>
+    <button onclick="openForm(this)">BORROW</button>
+</div>
+<div class="box">
+    <img src="car3.jpeg">
+    <h4>Luxury Car</h4>
+    <p class="price" data-price="200">$200/day</p>
+    <button onclick="openForm(this)">BORROW</button>
+</div>
+<div class="box">
+    <img src="car4.jpeg">
+    <h4>SUV</h4>
+    <p class="price" data-price="90">$90/day</p>
+    <button onclick="openForm(this)">BORROW</button>
+</div>
+<div class="box">
+    <img src="car5.jpeg">
+    <h4>Electric</h4>
+    <p class="price" data-price="110">$110/day</p>
+    <button onclick="openForm(this)">BORROW</button>
+</div>
+<div class="box">
+    <img src="car6.jpeg">
+    <h4>Compact</h4>
+    <p class="price" data-price="40">$40/day</p>
+    <button onclick="openForm(this)">BORROW</button>
+</div>
+</div>
+<div id="popup">
+    <div class="form-box">
+        <h3>Book Car</h3>
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="number" id="days" placeholder="Days">
+        <h4>Total: $<span id="total">0</span></h4>
+        <input type="text" id="card" placeholder="Card Number">
+        <button onclick="confirmBooking()">Confirm</button>
+        <button onclick="closeForm()">Cancel</button>
+    </div>
+</div>
+<div id="success">You borrowed the car ✅</div>
+<script>
+let selectedCar = "";
+let pricePerDay = 0;
+function saveInputs() {
+    localStorage.setItem("tempName", document.getElementById("name").value);
+    localStorage.setItem("tempEmail", document.getElementById("email").value);
+    localStorage.setItem("tempDays", document.getElementById("days").value);
+    localStorage.setItem("tempCard", document.getElementById("card").value);
+}
+function loadInputs() {
+    document.getElementById("name").value = localStorage.getItem("tempName") || "";
+    document.getElementById("email").value = localStorage.getItem("tempEmail") || "";
+    document.getElementById("days").value = localStorage.getItem("tempDays") || "";
+    document.getElementById("card").value = localStorage.getItem("tempCard") || "";
+    let days = document.getElementById("days").value;
+    if(days){
+        document.getElementById("total").innerText = days * pricePerDay;
+    }
+}
+function openForm(btn) {
+    let box = btn.parentElement;
+    selectedCar = box.querySelector("h4").innerText;
+    pricePerDay = box.querySelector(".price").dataset.price;
+
+    document.getElementById("popup").style.display = "flex";
+    loadInputs(); 
+}
+function closeForm() {
+    saveInputs(); // save before closing
+    document.getElementById("popup").style.display = "none";
+}
+document.getElementById("days").addEventListener("input", function() {
+    let days = this.value;
+    let total = days * pricePerDay;
+    document.getElementById("total").innerText = total || 0;
+    saveInputs();
+});
+["name","email","card"].forEach(id => {
+    document.getElementById(id).addEventListener("input", saveInputs);
+});
+function confirmBooking() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let days = document.getElementById("days").value;
+    let card = document.getElementById("card").value;
+    if(!name || !email || !days || !card){
+        alert("Fill everything.");
+        return;
+    }
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push({
+        car: selectedCar,
+        name,
+        email,
+        days,
+        total: document.getElementById("total").innerText,
+        date: new Date().toLocaleString()
+    });
+    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.removeItem("tempName");
+    localStorage.removeItem("tempEmail");
+    localStorage.removeItem("tempDays");
+    localStorage.removeItem("tempCard");
+    document.getElementById("popup").style.display = "none";
+    let success = document.getElementById("success");
+    success.style.display = "block";
+    setTimeout(() => {
+        success.style.display = "none";
+    }, 3000);
+}
+</script>
+</body>
+</html>

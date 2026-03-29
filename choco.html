@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChocoDream</title>
+<link rel="stylesheet" href="style.css">
+<style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff8f2;
+    color: #3b2a1d;
+}
+
+header {
+    background: #4e2e1e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero {
+    background: url("https://images.unsplash.com/photo-1606312619070-d48b4c652a52") center/cover;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: #f3e1d4;
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+button {
+    background: #6b4226;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+button:hover {
+    background: #8a5a3b;
+}
+
+.order {
+    padding: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: auto;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+footer {
+    background: #4e2e1e;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍫 ChocoDream</h1>
+    <p>Le plaisir du chocolat livré chez vous</p>
+</header>
+
+<section class="hero">
+    <h2>Découvrez nos chocolats</h2>
+</section>
+
+<section class="gallery">
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1582176604856-e824b4736522" alt="">
+        <h3>Noir Intense</h3>
+        <button onclick="selectProduct('Noir Intense')">Commander</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1606312619070-d48b4c652a52" alt="">
+        <h3>Lait Crémeux</h3>
+        <button onclick="selectProduct('Lait Crémeux')">Commander</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1582176604856-e824b4736522?auto=format&fit=crop&w=800&q=80" alt="">
+        <h3>Choco Blanc</h3>
+        <button onclick="selectProduct('Choco Blanc')">Commander</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.pexels.com/photos/1854664/pexels-photo-1854664.jpeg" alt="">
+        <h3>Truffes</h3>
+        <button onclick="selectProduct('Truffes')">Commander</button>
+    </div>
+
+</section>
+
+<section class="order">
+    <h2>🛒 Passer une commande</h2>
+
+    <form id="orderForm">
+        <input type="text" id="nom" placeholder="Votre nom" required>
+        <input type="email" id="email" placeholder="Votre email" required>
+
+        <select id="produit" required>
+            <option value="">Choisir un chocolat</option>
+            <option>Noir Intense</option>
+            <option>Lait Crémeux</option>
+            <option>Choco Blanc</option>
+            <option>Truffes</option>
+        </select>
+
+        <input type="number" id="quantite" placeholder="Quantité" required>
+
+        <textarea id="adresse" placeholder="Votre adresse" required></textarea>
+
+        <button type="submit">Commander</button>
+    </form>
+
+    <p id="message"></p>
+</section>
+
+<footer>
+    <p>© 2026 ChocoDream</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+<script>
+    function selectProduct(product) {
+    document.getElementById("produit").value = product;
+    window.scrollTo({
+        top: document.querySelector(".order").offsetTop,
+        behavior: "smooth"
+    });
+}
+
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let nom = document.getElementById("nom").value;
+    let produit = document.getElementById("produit").value;
+    let qte = document.getElementById("quantite").value;
+
+    let message = document.getElementById("message");
+
+    message.innerText = `Merci ${nom} ! Votre commande de ${qte} x ${produit} est enregistrée 🍫`;
+});
+</script>
+</html>

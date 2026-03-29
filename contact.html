@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+}
+header {
+    background: #1e2a38;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.contact-section {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.contact-section h2 {
+    margin-bottom: 20px;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+button {
+    padding: 12px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+button:hover {
+    background: #218838;
+}
+#fait {
+    display: none;
+    color: green;
+    margin-top: 15px;
+    font-weight: bold;
+}
+</style></head>
+<body>
+<header>
+    <h1>Contactez-nous</h1>
+    <nav>
+        <a href="cars.html">Cars</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+<section class="contact-section">
+    <h2>Envoyez-nous un message</h2>
+    <form id="contactForm">
+        <input type="text" id="nom" placeholder="Nom">
+        <input type="email" id="email" placeholder="Email">
+        <select id="sujet">
+            <option value="">Choisir un sujet</option>
+            <option value="Location">Location</option>
+            <option value="Information">Information</option>
+        </select>
+        <textarea id="message" placeholder="Votre message"></textarea>
+        <button type="submit">Envoyer</button>
+    </form>
+    <p id="fait">✅ Demande envoyée</p>
+</section>
+<script src="contact.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("contactForm");
+    const confirmation = document.getElementById("fait");
+    const params = new URLSearchParams(window.location.search);
+    const car = params.get("car");
+    if (car) {
+        document.getElementById("sujet").value = "Location";
+        document.getElementById("message").value = "Je suis intéressé par: " + car;
+    }
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nom = document.getElementById("nom").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const sujet = document.getElementById("sujet").value;
+        const message = document.getElementById("message").value.trim();
+        if (!nom || !email || !sujet || !message) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+        }
+        console.log({ nom, email, sujet, message });
+        confirmation.style.display = "block";
+        setTimeout(() => {
+            confirmation.style.display = "none";
+            form.reset(); 
+            localStorage.removeItem("prefillCar");
+        }, 3000);
+    });
+});
+</script>
+</body>
+</html>
